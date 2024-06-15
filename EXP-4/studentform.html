@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        form {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table td:first-child {
+            width: 40%;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .success {
+            color: green;
+            font-size: 16px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="registrationForm" onsubmit="return validateForm()">
+        <table>
+            <tr>
+                <td>Enter Name :</td>
+                <td><input type="text" id="name" required></td>
+                <td><span id="nameError" class="error"></span></td>
+            </tr>
+	    <tr>
+                <td>Roll No :</td>
+                <td><input type="text" id="rno" required></td>
+                <td><span id="rnoError" class="error"></span></td>
+            </tr>
+
+            <tr>
+                <td>Select Gender :</td>
+                <td>
+                    <input type="radio" name="gender" id="male" value="male" required> Male
+                    <input type="radio" name="gender" id="female" value="female" required> Female
+                </td>
+                <td><span id="genderError" class="error"></span></td>
+            </tr>
+            <tr>
+                <td>Language Known :</td>
+                <td>
+                    <input type="checkbox" id="c"> C
+                    <input type="checkbox" id="cpp"> C++
+                    <input type="checkbox" id="java"> Java
+                </td>
+                <td><span id="languagesError" class="error"></span></td>
+            </tr>
+            <tr>
+                <td>Area of Interest:</td>
+                <td>
+                    <select id="areaOfInterest" name="areaOfInterest" required>
+                        <option value="">Select Area of Interest</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Mobile App Development">Mobile App Development</option>
+                        <option value="Data Science">Data Science</option>
+                    </select>
+                </td>
+                <td><span id="areaError" class="error"></span></td>
+            </tr>
+            <tr>
+                <td>Enter Email :</td>
+                <td><input type="email" id="email" required></td>
+                <td><span id="emailError" class="error"></span></td>
+            </tr>
+            <tr>
+                <td>Enter Phone Number :</td>
+                <td><input type="tel" id="phone" required></td>
+                <td><span id="phoneError" class="error"></span></td>
+            </tr>
+            <tr>
+                <td>Enter Password :</td>
+                <td><input type="password" id="password" required></td>
+                <td><span id="passwordError" class="error"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+        <div id="successMessage" class="success">Form submitted successfully!</div>
+    </form>
+
+    <script>
+        function validateForm() {
+            var name = document.getElementById("name").value;
+	    var rollNumber = document.getElementById("rno").value;
+            var rollNumberPattern = /^\d{2}[a-zA-Z]{3}\d{3}$/;
+
+            var maleChecked = document.getElementById("male").checked;
+            var femaleChecked = document.getElementById("female").checked;
+            var email = document.getElementById("email").value;
+            var phone = document.getElementById("phone").value;
+            var password = document.getElementById("password").value;
+            var cChecked = document.getElementById("c").checked;
+            var cppChecked = document.getElementById("cpp").checked;
+            var javaChecked = document.getElementById("java").checked;
+
+            var nameRegex = /^[a-zA-Z\s]+$/;
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            var isValid = true;
+
+                        document.querySelectorAll('.error').forEach(function(el) {
+                el.textContent = '';
+            });
+
+            if (!nameRegex.test(name)) {
+                document.getElementById("nameError").textContent = "Name should contain alphabets and spaces only.";
+                isValid = false;
+            }
+	    if (!rollNumberPattern.test(rollNumber)) {
+                document.getElementById("rnoError").innerText = "Please enter a valid roll number format (e.g., 22ITR095).";
+                isValid = false;
+            }
+
+            if (!passwordRegex.test(password)) {
+                document.getElementById("passwordError").textContent = "Password should contain at least one uppercase, one lowercase, one digit, one special character, and be at least 8 characters long.";
+                isValid = false;
+            }
+
+            if (!maleChecked && !femaleChecked) {
+                document.getElementById("genderError").textContent = "Please select your gender.";
+                isValid = false;
+            }
+
+            if (!emailRegex.test(email)) {
+                document.getElementById("emailError").textContent = "Please enter a valid email address.";
+                isValid = false;
+            }
+
+            if (!cChecked && !cppChecked && !javaChecked) {
+                document.getElementById("languagesError").textContent = "Please select at least one language known.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                document.getElementById("successMessage").style.display = "block";
+            }
+
+            return false;         }
+    </script>
+</body>
+</html>
+
+
